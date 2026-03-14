@@ -1,0 +1,24 @@
+{
+  "name": "web_garden",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/miakimamelia/web_garden.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/miakimamelia/web_garden/issues"
+  },
+  "homepage": "https://github.com/miakimamelia/web_garden#readme",
+  "dependencies": {
+    "98.css": "^0.1.21"
+  }
+}
