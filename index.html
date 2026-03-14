@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Soft Mac Desktop</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="mac-shell">
+    <header class="menu-bar" aria-label="macOS style menu bar">
+      <div class="menu-left">
+       
+      <div class="menu-right">
+        <span class="menu-status">⌘⌥⎋</span>
+        <span class="menu-status">☁︎ 72%</span>
+        <span class="menu-status">📶</span>
+        <span class="menu-status">🔋 89%</span>
+        <span class="menu-status" data-menu-date>Wed Nov 12</span>
+        <span class="menu-status" data-menu-time>6:16 PM</span>
+      </div>
+    </header>
+
+   
+      <article class="card main-window deer" data-main-window>
+        <div class="window-head" data-drag-handle>
+          <div class="window-dots" aria-hidden="true">
+            <button class="dot red" data-close aria-label="Close window"></button>
+            <button class="dot yellow" data-collapse aria-label="Collapse window"></button>
+            <button class="dot green" data-reset aria-label="Reset window size and position"></button>
+          </div>
+          <div class="address-bar">
+            <span class="chevron" aria-hidden="true">‹</span>
+            <span class="chevron" aria-hidden="true">›</span>
+            <div class="address-field" data-url>bear://forest-home</div>
+            <button class="refresh" data-refresh aria-label="Refresh view">↻</button>
+          </div>
+        </div>
+        <div class="window-body">
+          <p class="eyebrow" data-eyebrow>Soft desktop</p>
+          <h1 data-title>Cozy woodland welcome.</h1>
+          <p class="lede" data-text>The main window is your canvas. Use the dock or desktop icons to swap scenes—everything stays in this frame so it feels like a single MacBook view.</p>
+        </div>
+        <div class="resize-hint" aria-hidden="true">↘</div>
+      </article>
+    </main>
+  </div>
+
+  <footer class="dock" aria-label="macOS dock">
+    <div class="dock-glow"></div>
+    <button class="dock-icon active" data-view="bear" aria-label="Forest view">🐻</button>
+    <button class="dock-icon" data-view="desktop" aria-label="Desk tools">🖥️</button>
+    <button class="dock-icon" data-view="folder" aria-label="Folder">📁</button>
+    <button class="dock-icon" data-view="pen" aria-label="Sketch">✏️</button>
+    <button class="dock-icon" data-view="music" aria-label="Music">🎧</button>
+    <button class="dock-icon" data-view="mail" aria-label="Letters">💌</button>
+    <button class="dock-icon" data-view="game" aria-label="Games">🕹️</button>
+    <button class="dock-icon" data-view="art" aria-label="Gallery">🖼️</button>
+    <button class="dock-icon" data-view="settings" aria-label="Settings">⚙️</button>
+  </footer>
+
+  <script>
+    const timeEl = document.querySelector('[data-clock]');
+    const dateEl = document.querySelector('[data-date]');
+    const menuTimeEl = document.querySelector('[data-menu-time]');
+    const menuDateEl = document.querySelector('[data-menu-date]');
+
+    const dateFormat = new Intl.DateTimeFormat('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const timeFormat = new Intl.DateTimeFormat('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    function renderClock() {
+      const now = new Date();
+      const timeText = timeFormat.format(now);
+      const dateText = dateFormat.format(now);
+      if (timeEl) timeEl.textContent = timeText;
+      if (menuTimeEl) menuTimeEl.textContent = timeText;
+      if (dateEl) dateEl.textContent = dateText.replace(',', '');
+      if (menuDateEl) menuDateEl.textContent = dateText;
+    }
+
+    const views = {
+      bear: {
+        label: 'Forest Home',
+        eyebrow: 'Soft desktop',
+        title: 'Cozy woodland welcome.',
+        text: 'This is your base scene inspired by the deer from the wallpaper. Gentle knit texture and warm blush keep it calm.',
+        url: 'bear://forest-home',
+        bg: 'deer'
+      },
+      desktop: {
+        label: 'Desk Tools',
+        eyebrow: 'Workspace',
+        title: 'Pastel workstation ready.',
+        text: 'Quick notes, open tabs, and a tidy dock sit in one frame. Imagine a clean desk with soft light.',
+        url: 'desk://workspace',
+        bg: 'marshmallows'
+      },
+      folder: {
+        label: 'Folders',
+        eyebrow: 'Storage',
+        title: 'Organize the keepsakes.',
+        text: 'Bundle sketches, screenshots, and cozy references into one pastel folder stack.',
+        url: 'finder://folders',
+        bg: 'silhouette'
+      },
+      pen: {
+        label: 'Sketchpad',
+        eyebrow: 'Doodles',
+        title: 'Light pencil strokes.',
+        text: 'A soft knit backdrop for loose drawings and annotations—nothing harsh, just gentle lines.',
+        url: 'sketch://pad',
+        bg: 'knit'
+      },
+      music: {
+        label: 'Playlist',
+        eyebrow: 'Listening',
+        title: 'Featherlight soundtrack.',
+        text: 'Play whispery piano and lo-fi strings while you work. Volume stays polite.',
+        url: 'listen://lofi',
+        bg: 'heart'
+      },
+      mail: {
+        label: 'Letters',
+        eyebrow: 'Messages',
+        title: 'Kind notes delivered.',
+        text: 'Send and collect small letters, stickers, and pastel stamps in one gentle inbox.',
+        url: 'mail://letters',
+        bg: 'bunny-card'
+      },
+      game: {
+        label: 'Playtime',
+        eyebrow: 'Break',
+        title: 'Tiny games, soft glow.',
+        text: 'Take a pause with low-stakes play; everything stays dreamy and slow.',
+        url: 'play://soft-games',
+        bg: 'silhouette'
+      },
+      art: {
+        label: 'Gallery',
+        eyebrow: 'Curate',
+        title: 'Display the plush unicorn.',
+        text: 'Show your favorite illustrations and plush friends on a bright, airy wall.',
+        url: 'gallery://unicorn',
+        bg: 'unicorn'
+      },
+      settings: {
+        label: 'Settings',
+        eyebrow: 'Tweak',
+        title: 'Adjust the glow.',
+        text: 'Tone down brightness, shift blush, or swap wallpaper while the window stays in place.',
+        url: 'prefs://glow',
+        bg: 'florals'
+      }
+    };
+
+    const desktop = document.querySelector('.desktop-canvas');
+    const mainWindow = document.querySelector('[data-main-window]');
+    const dragHandle = document.querySelector('[data-drag-handle]');
+    const closeBtn = document.querySelector('[data-close]');
+    const collapseBtn = document.querySelector('[data-collapse]');
+    const resetBtn = document.querySelector('[data-reset]');
+    const refreshBtn = document.querySelector('[data-refresh]');
+    const urlEl = document.querySelector('[data-url]');
+    const eyebrowEl = document.querySelector('[data-eyebrow]');
+    const titleEl = document.querySelector('[data-title]');
+    const textEl = document.querySelector('[data-text]');
+    const dockButtons = Array.from(document.querySelectorAll('[data-view]'));
+    const backIcons = Array.from(document.querySelectorAll('.back-icon'));
+
+    const backgrounds = ['deer','marshmallows','silhouette','bunny-card','knit','heart','florals','unicorn'];
+    let currentView = 'bear';
+    let hasDragged = false;
+
+    function clamp(value, min, max) { return Math.min(Math.max(value, min), max); }
+
+    function centerWindow() {
+      if (!mainWindow || !desktop) return;
+      if (mainWindow.classList.contains('closed')) return;
+      const canvasWidth = desktop.clientWidth;
+      const canvasHeight = desktop.clientHeight || window.innerHeight * 0.7;
+      const width = mainWindow.offsetWidth;
+      const height = mainWindow.offsetHeight;
+      const left = Math.max(12, (canvasWidth - width) / 2);
+      const top = Math.max(70, (canvasHeight - height) / 3);
+      mainWindow.style.left = `${left}px`;
+      mainWindow.style.top = `${top}px`;
+    }
+
+    function setView(name) {
+      const view = views[name];
+      if (!view || !mainWindow) return;
+      currentView = name;
+      backgrounds.forEach(bg => mainWindow.classList.remove(bg));
+      mainWindow.classList.add(view.bg);
+      mainWindow.classList.remove('closed');
+      mainWindow.removeAttribute('aria-hidden');
+      if (urlEl) urlEl.textContent = view.url;
+      if (eyebrowEl) eyebrowEl.textContent = view.eyebrow;
+      if (titleEl) titleEl.textContent = view.title;
+      if (textEl) textEl.textContent = view.text;
+      dockButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === name));
+      backIcons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === name));
+      mainWindow.setAttribute('aria-label', view.label);
+      if (!hasDragged) centerWindow();
+    }
+
+    function closeWindow() {
+      if (!mainWindow) return;
+      mainWindow.classList.add('closed');
+      mainWindow.setAttribute('aria-hidden', 'true');
+    }
+
+    function toggleCollapse() {
+      if (!mainWindow) return;
+      mainWindow.classList.toggle('collapsed');
+    }
+
+    function resetWindow() {
+      if (!mainWindow) return;
+      hasDragged = false;
+      mainWindow.classList.remove('collapsed');
+      mainWindow.classList.remove('closed');
+      mainWindow.style.width = '';
+      mainWindow.style.height = '';
+      mainWindow.style.left = '';
+      mainWindow.style.top = '';
+      centerWindow();
+    }
+
+    function refreshWindow() { setView(currentView); }
+
+    function wireDrag() {
+      if (!dragHandle || !mainWindow || !desktop) return;
+      let pointerId = null;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      const start = (e) => {
+        if (mainWindow.classList.contains('closed')) return;
+        pointerId = e.pointerId;
+        dragHandle.setPointerCapture(pointerId);
+        const rect = mainWindow.getBoundingClientRect();
+        const canvasRect = desktop.getBoundingClientRect();
+        offsetX = e.clientX - rect.left;
+        offsetY = e.clientY - rect.top;
+        dragHandle.classList.add('dragging');
+        document.addEventListener('pointermove', move);
+        document.addEventListener('pointerup', end);
+      };
+
+      const move = (e) => {
+        if (pointerId === null) return;
+        hasDragged = true;
+        const canvasRect = desktop.getBoundingClientRect();
+        const rect = mainWindow.getBoundingClientRect();
+        const maxX = canvasRect.width - rect.width - 6;
+        const maxY = canvasRect.height - rect.height - 6;
+        const newX = clamp(e.clientX - canvasRect.left - offsetX, 6, Math.max(6, maxX));
+        const newY = clamp(e.clientY - canvasRect.top - offsetY, 6, Math.max(6, maxY));
+        mainWindow.style.left = `${newX}px`;
+        mainWindow.style.top = `${newY}px`;
+      };
+
+      const end = (e) => {
+        if (pointerId === null) return;
+        dragHandle.classList.remove('dragging');
+        dragHandle.releasePointerCapture(pointerId);
+        document.removeEventListener('pointermove', move);
+        document.removeEventListener('pointerup', end);
+        pointerId = null;
+      };
+
+      dragHandle.addEventListener('pointerdown', start);
+    }
+
+    dockButtons.forEach(btn => {
+      btn.addEventListener('click', () => setView(btn.dataset.view));
+      btn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          setView(btn.dataset.view);
+        }
+      });
+    });
+
+    backIcons.forEach(btn => {
+      btn.addEventListener('click', () => setView(btn.dataset.view));
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeWindow);
+    if (collapseBtn) collapseBtn.addEventListener('click', toggleCollapse);
+    if (resetBtn) resetBtn.addEventListener('click', resetWindow);
+    if (refreshBtn) refreshBtn.addEventListener('click', refreshWindow);
+
+    window.addEventListener('resize', () => { if (!hasDragged) centerWindow(); });
+
+    wireDrag();
+    setView('bear');
+    renderClock();
+    setInterval(renderClock, 30000);
+  </script>
+</body>
+</html>
