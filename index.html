@@ -52,6 +52,7 @@
     <button class="dock-icon button" data-view="desktop" aria-label="Desk tools" style="background:none;border:none;box-shadow:none;padding:0;"><img src="applications/wings.png" alt="Desk tools" style="width:160%;height:160%;object-fit:contain;display:block;transform:translateY(-14px);"></button>
     <button class="dock-icon button" data-view="mail" aria-label="Letters" style="background:none;border:none;box-shadow:none;padding:0;"><img src="applications/clover.png" alt="Letters" style="width:130%;height:130%;object-fit:contain;display:block;transform:translateY(-4px);"></button>
     <button class="dock-icon button" data-view="game" aria-label="Games" style="background:none;border:none;box-shadow:none;padding:0;"><img src="applications/camera.png" alt="Games" style="width:180%;height:180%;object-fit:contain;display:block;transform:translateY(-22px);"></button>
+    <button class="dock-icon button" data-view="lastmeal" aria-label="Last Meal" style="background:none;border:none;box-shadow:none;padding:0;font-size:28px;color:#9b5872;">🍽</button>
   </footer>
 
   <script>
@@ -81,7 +82,8 @@
       mail:     { label: 'Letters',      eyebrow: 'Messages',      title: 'Kind notes delivered.',      text: 'Send and collect small letters, stickers, and pastel stamps in one gentle inbox.',                                                    url: 'mail://letters',                    bg: 'bunny-card'   },
       game:     { label: 'Playtime',     eyebrow: 'Break',         title: 'Tiny games, soft glow.',     text: 'Take a pause with low-stakes play; everything stays dreamy and slow.',                                                               url: 'play://soft-games',                 bg: 'silhouette'   },
       art:      { label: 'Gallery',      eyebrow: 'Curate',        title: 'Display the plush unicorn.', text: 'Show your favorite illustrations and plush friends on a bright, airy wall.',                                                         url: 'gallery://unicorn',                 bg: 'unicorn'      },
-      settings: { label: 'Settings',     eyebrow: 'Tweak',         title: 'Adjust the glow.',           text: 'Tone down brightness, shift blush, or swap wallpaper while the window stays in place.',                                              url: 'prefs://glow',                      bg: 'florals'      }
+      settings: { label: 'Settings',     eyebrow: 'Tweak',         title: 'Adjust the glow.',           text: 'Tone down brightness, shift blush, or swap wallpaper while the window stays in place.',                                              url: 'prefs://glow',                      bg: 'florals'      },
+      lastmeal: { label: 'Last Meal',    eyebrow: 'If it were my last day...', title: 'My Last Meal', text: '', url: 'menu://last-meal', bg: 'lastmeal', custom: true }
     };
 
     const mainWindow = document.querySelector('[data-main-window]');
@@ -95,7 +97,7 @@
     const textEl     = document.querySelector('[data-text]');
     const dockButtons = Array.from(document.querySelectorAll('[data-view]'));
 
-    const backgrounds = ['deer','marshmallows','silhouette','bunny-card','knit','heart','florals','unicorn'];
+    const backgrounds = ['deer','marshmallows','silhouette','bunny-card','knit','heart','florals','unicorn','lastmeal'];
     let openTabs = [];
     let activeTab = null;
 
@@ -136,6 +138,52 @@
       if (eyebrowEl) eyebrowEl.textContent = view.eyebrow;
       if (titleEl)   titleEl.textContent   = view.title;
       if (textEl)    textEl.textContent    = view.text;
+
+      const customArea = document.querySelector('.last-meal-menu');
+      if (view.custom) {
+        if (textEl) textEl.style.display = 'none';
+        if (!customArea) {
+          const menu = document.createElement('div');
+          menu.className = 'last-meal-menu';
+          menu.innerHTML = `
+            <div class="menu-divider"></div>
+            <div class="menu-item-row">
+              <span class="menu-number">01</span>
+              <img class="menu-photo" src="lastmealimgs/e05ead8431c5dd1cdd2bcd483b9fa4aa.jpg" alt="Tempura Udon">
+              <div class="menu-details">
+                <span class="menu-dish">Tempura Udon</span>
+                <span class="menu-desc">Shrimp tempura, soft egg, narutomaki</span>
+              </div>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-item-row">
+              <span class="menu-number">02</span>
+              <img class="menu-photo" src="lastmealimgs/e138c212bd67f6c35050623243664e59.jpg" alt="Prosciutto & Arugula Sandwich">
+              <div class="menu-details">
+                <span class="menu-dish">Prosciutto & Arugula</span>
+                <span class="menu-desc">On ciabatta</span>
+              </div>
+            </div>
+            <div class="menu-divider"></div>
+            <div class="menu-item-row">
+              <span class="menu-number">03</span>
+              <img class="menu-photo" src="lastmealimgs/b8db0584da9a685b21e306099fad82f0.jpg" alt="Truffle Parmesan Fries">
+              <div class="menu-details">
+                <span class="menu-dish">Truffle Parmesan Fries</span>
+                <span class="menu-desc">With aioli & ketchup</span>
+              </div>
+            </div>
+            <div class="menu-divider"></div>
+            <p class="menu-footer">Served with love, no last words necessary.</p>
+          `;
+          document.querySelector('.content-header').appendChild(menu);
+        } else {
+          customArea.style.display = 'block';
+        }
+      } else {
+        if (textEl) textEl.style.display = '';
+        if (customArea) customArea.style.display = 'none';
+      }
       dockButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.view === name));
       renderTabs();
     }
